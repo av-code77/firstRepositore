@@ -1,0 +1,215 @@
+@use "sass:map";
+@use "variables";
+
+@mixin badge($bg, $color, $font: 14px) {
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: $bg;
+  color: $color;
+  font-size: $font;
+  font-weight: 500;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin btn-base(
+  $bg: variables.$color-primary,
+  $color: variables.$color-white,
+  $hover-bg: null,
+  $active-bg: null,
+  $size: md
+) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: variables.$space-2;
+
+  border: 1px solid transparent;
+  border-radius: variables.$radius-md;
+
+  background: $bg;
+  color: $color;
+
+  font-family: inherit;
+  font-weight: variables.$weight-semibold;
+  line-height: 1;
+  text-align: center;
+  text-decoration: none;
+
+  cursor: pointer;
+  user-select: none;
+
+  transition:
+    transform 0.15s ease,
+    background 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    opacity 0.2s ease;
+
+  @if $size == sm {
+    min-height: 32px;
+    padding: variables.$space-1 variables.$space-3;
+    font-size: variables.$font-sm;
+    border-radius: variables.$radius-md;
+  } @else if $size == lg {
+    min-height: 48px;
+    padding: variables.$space-3 variables.$space-6;
+    font-size: variables.$font-lg;
+    border-radius: variables.$radius-lg;
+  } @else {
+    // md — по умолчанию
+    min-height: 40px;
+    padding: variables.$space-2 variables.$space-4;
+    font-size: variables.$font-base;
+  }
+
+  &:hover {
+    @if $hover-bg {
+      background: $hover-bg;
+    } @else {
+      background: darken($bg, 3%);
+    }
+  }
+
+  &:active {
+    @if $active-bg {
+      background: $active-bg;
+    }
+
+    transform: translateY(1px);
+  }
+
+  &:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 3px;
+  }
+
+  &:disabled,
+  &[disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+}
+
+@mixin base-card {
+  padding: variables.$space-4;
+  border-radius: variables.$radius-md;
+  background-color: variables.$color-white;
+  text-align: justify;
+  box-shadow: variables.$shadow-md;
+}
+
+@mixin input-base(
+  $border-color: variables.$gray-600,
+  $focus-color: variables.$color-primary
+) {
+  padding: variables.$space-2 variables.$space-4;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: black;
+  border: 1px solid $border-color;
+  border-radius: variables.$radius-md; // Привели к единой системе скруглений
+  transition: variables.$transition-base;
+  outline: none;
+  background-color: variables.$gray-300;
+
+  &::placeholder {
+    color: variables.$gray-400;
+    opacity: 1;
+  }
+
+  &:hover {
+    border-color: darken($border-color, 10%);
+  }
+
+  &:focus {
+    border-color: $focus-color;
+    box-shadow: 0 0 0 4px rgba($focus-color, 0.15);
+  }
+
+  &:disabled {
+    background-color: #f9f9f9;
+    cursor: not-allowed;
+    opacity: 0.7;
+  }
+}
+
+@mixin flex($justify: flex-start, $align: center, $wrap: nowrap, $gap: 0) {
+  display: flex;
+  justify-content: $justify;
+  align-items: $align;
+  flex-wrap: $wrap;
+  @if $gap != 0 {
+    gap: $gap;
+  }
+}
+
+@mixin text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@mixin square($size) {
+  width: $size;
+  height: $size;
+}
+$breakpoints: (
+  "sm": 576px,
+  "md": 768px,
+  "lg": 1024px,
+  "xl": 1280px,
+  "xxl": 1440px,
+);
+
+@mixin respond-to($breakpoint) {
+  @if map-has-key($breakpoints, $breakpoint) {
+    @media (max-width: map-get($breakpoints, $breakpoint)) {
+      @content;
+    }
+  } @else {
+    @warn "Неизвестный брейкпоинт: `#{$breakpoint}`.";
+  }
+}
+
+@mixin grid($columns: 1, $gap: 0) {
+  display: grid;
+  grid-template-columns: repeat($columns, 1fr);
+  @if $gap != 0 {
+    gap: $gap;
+  }
+}
+
+@mixin custom-scrollbar(
+  $width: 8px,
+  $thumb-color: variables.$gray-300,
+  $track-color: transparent
+) {
+  &::-webkit-scrollbar {
+    width: $width;
+    height: $width;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: $track-color;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $thumb-color;
+    border-radius: calc($width / 2);
+
+    &:hover {
+      background: darken($thumb-color, 15%);
+    }
+  }
+}
+
+@mixin bg-cover($url) {
+  background-image: url($url);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}

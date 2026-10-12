@@ -1,0 +1,37 @@
+@use "variables";
+//* 1440 → 1024 → 768 → 576 → 414 → 375 → 320
+body {
+  background-color: variables.$gray-50;
+  color: variables.$gray-700;
+  font-family: variables.$font-family-base;
+  font-size: variables.$font-base;
+
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  overflow-x: hidden;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: variables.$font-family-heading;
+  font-weight: variables.$weight-bold;
+  color: variables.$gray-900; 
+  line-height: 1.25; 
+}
+
+code,
+kbd,
+samp,
+pre {
+  font-family: variables.$font-family-mono;
+  font-size: 0.9em; // Чуть аккуратнее смотрится в тексте
+}
+// <link rel="preconnect" href="https://fonts.googleapis.com">
+// <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+// <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Montserrat:wght@700&family=JetBrains+Mono&display=swap" rel="stylesheet">
